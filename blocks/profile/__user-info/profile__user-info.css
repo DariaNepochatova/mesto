@@ -1,0 +1,20 @@
+.profile__user-info {
+    font-family: 'Inter', Arial, sans-serif;
+    color: white;
+    margin-left: 30px;
+    display: grid;
+    align-self: center;
+    grid-template-columns: 294px 24px;
+    column-gap: 18px;
+    row-gap: 16px;
+}
+
+@media screen and (max-width: 640px) {
+    .profile__user-info {
+        margin: 22.25px 0 0;
+        width: 100%;
+        grid-template-columns: 1fr 59.06vw 1fr;
+        column-gap: 10px;
+        row-gap: 14px;
+    }
+}
