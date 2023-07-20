@@ -1,0 +1,23 @@
+.popup__form-button {
+    display: block;
+    width: 83.26%;
+    margin: 48px auto 37px auto;
+    background-color: #000;
+    color: #FFF;
+    border: 0;
+    padding: 0;
+    font-family: 'Inter', 'Arial', sans-serif;
+    min-height: 50px;
+    transition: opacity 0.4s linear;
+}
+
+.popup__form-button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 530px) {
+    .popup__form-button {
+        margin: 45px auto 25px;
+    }
+}

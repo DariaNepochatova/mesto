@@ -7,7 +7,7 @@
     line-height: 1.14;
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 660px) {
     .profile__user-name {
         grid-column-start: 2;
         grid-column-end: 3;

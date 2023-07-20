@@ -3,7 +3,7 @@
     height: 19px;
     padding: 0;
     border: 0;
-    align-self: end;
+    align-self: center;
     background-color: #FFF;
     background-image: url(../../../images/like.svg);
     transition: opacity 0.4s linear;

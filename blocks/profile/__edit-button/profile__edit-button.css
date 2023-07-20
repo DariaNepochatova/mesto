@@ -1,5 +1,6 @@
 .profile__edit-button {
-    align-self: center;
+    align-self: end;
+    margin-bottom: 7px;
     padding: 0;
     background-color: #000;
     border: 0;
@@ -14,12 +15,12 @@
     cursor: pointer;
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 660px) {
     .profile__edit-button {
         grid-column-start: 3;
         grid-column-end: 4;
         justify-self: start;
-        align-self: end;
+        margin-bottom: 6px;
         width: 5.625vw;
         height: 5.625vw;
     }
