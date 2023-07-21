@@ -1,12 +1,11 @@
 .gallery__signature {
-    width: 87.23%;
-    margin: 25px auto 25px;
+    padding: 25px 18px 25px 18px;
     display: flex;
     justify-content: space-between;
   }
 
   @media screen and (max-width: 660px) {
     .gallery__signature {
-      margin-top: 21px;
+      padding-top: 21px;
     }
   }

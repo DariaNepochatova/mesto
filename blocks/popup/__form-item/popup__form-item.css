@@ -1,20 +1,23 @@
-.popup__form-name {
+.popup__form-item {
     display: block;
-    padding: 0;
-    width: 83.26%;
-    margin: 54px auto 0;
+    padding: 5px 0 9px 0;
+    width: 100%;
+    margin: 45px auto 0;
     border: 0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    min-height: 27px;
     color: #000;
     font-family: 'Inter', 'Arial', sans-serif;
     font-size: 14px;
     font-weight: 400;
-    line-height: normal;
+    line-height: 1;
+}
+
+.popup__form-item:last-of-type {
+    margin-top: 25px;
 }
 
 @media screen and (max-width: 530px) {
-    .popup__form-name {
-        margin-top: 75px;
+    .popup__form-item {
+        margin-top: 71px;
     }
 }
