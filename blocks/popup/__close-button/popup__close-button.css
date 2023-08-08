@@ -10,6 +10,7 @@
     padding: 0;
     border: 0;
     transition: opacity 0.4s linear;
+    z-index: 2;
 }
 
 .popup__close-button:hover {

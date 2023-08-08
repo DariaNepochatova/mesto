@@ -1,0 +1,20 @@
+.gallery__button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border: 0;
+    padding: 0;
+    background-image: url(../../../images/Trash.svg);
+    width: 18px;
+    height: 20px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    transition: opacity 0.4s linear;
+    z-index: 1;
+ }
+
+ .gallery__button:hover {
+    opacity: 0.6;
+ }

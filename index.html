@@ -37,103 +37,13 @@
         </section>
         <section class="gallery">
           <ul class="gallery__items">
-            <li class="gallery__item">
-              <img
-                class="gallery__image"
-                src="./images/karachevsk.jpg"
-                alt="вид на башню в горах в городе Карачаевск"
-              />
-              <div class="gallery__signature">
-                <h2 class="gallery__title">Карачаево-Черкессия</h2>
-                <button
-                  class="gallery__like"
-                  type="button"
-                  aria-label="нравится"
-                ></button>
-              </div>
-            </li>
-            <li class="gallery__item">
-              <img
-                class="gallery__image"
-                src="./images/elbrus.jpg"
-                alt="вид на Эльбрус на закате"
-              />
-              <div class="gallery__signature">
-                <h2 class="gallery__title">Гора Эльбрус</h2>
-                <button
-                  class="gallery__like"
-                  type="button"
-                  aria-label="нравится"
-                ></button>
-              </div>
-            </li>
-            <li class="gallery__item">
-              <img
-                class="gallery__image"
-                src="./images/donbai.jpg"
-                alt="вид на гор через осенний лес в пасмурную погоду"
-              />
-              <div class="gallery__signature">
-                <h2 class="gallery__title">Донбай</h2>
-                <button
-                  class="gallery__like"
-                  type="button"
-                  aria-label="нравится"
-                ></button>
-              </div>
-            </li>
-            <li class="gallery__item">
-              <img
-                class="gallery__image"
-                src="./images/kirovsc.jpg"
-                alt="вид на Хибины в Кировске"
-              />
-              <div class="gallery__signature">
-                <h2 class="gallery__title">Кировск</h2>
-                <button
-                  class="gallery__like"
-                  type="button"
-                  aria-label="нравится"
-                ></button>
-              </div>
-            </li>
-            <li class="gallery__item">
-              <img
-                class="gallery__image"
-                src="./images/omsk.jpg"
-                alt="вид на мост на закате"
-              />
-              <div class="gallery__signature">
-                <h2 class="gallery__title">Омск</h2>
-                <button
-                  class="gallery__like"
-                  type="button"
-                  aria-label="нравится"
-                ></button>
-              </div>
-            </li>
-            <li class="gallery__item">
-              <img
-                class="gallery__image"
-                src="./images/karelia.jpg"
-                alt="вид на карьер с изумрудной водой"
-              />
-              <div class="gallery__signature">
-                <h2 class="gallery__title">Карелия</h2>
-                <button
-                  class="gallery__like"
-                  type="button"
-                  aria-label="нравится"
-                ></button>
-              </div>
-            </li>
           </ul>
         </section>
       </main>
       <footer class="footer">
         <p class="footer__title">© 2020 Mesto Russia</p>
       </footer>
-      <section class="popup">
+      <section class="popup" id="profile">
         <div class="popup__container">
           <h2 class="popup__title">Редактировать профиль</h2>
           <form class="popup__form" name="user_info">
@@ -166,7 +76,70 @@
           ></button>
         </div>
       </section>
+      <section class="popup" id="picture">
+        <div class="popup__container">
+          <h2 class="popup__title">Новое место</h2>
+          <form class="popup__form" name="add-picture">
+            <input
+              class="popup__form-item"
+              type="text"
+              name="place-name"
+              id="place-name"
+              placeholder="Название"
+            />
+            <input
+              class="popup__form-item"
+              type="url"
+              name="place-link"
+              id="place-link"
+              placeholder="Ссылка на картинку"
+            />
+            <button
+              type="submit"
+              class="popup__form-button"
+              aria-label="сохранить"
+            >
+              Сохранить
+            </button>
+          </form>
+          <button
+            class="popup__close-button"
+            type="button"
+            aria-label="закрыть"
+          ></button>
+        </div>
+      </section>
     </div>
+    <template id="cards">
+      <li class="gallery__item">
+        <button class="gallery__button" type="button"
+        aria-label="удалить"></button>
+        <div class="gallery__image-container">
+        <img
+          class="gallery__image"
+          src=""
+          alt=""
+        />
+        </div>
+        <div class="gallery__signature">
+          <h2 class="gallery__title"></h2>
+          <button
+            class="gallery__like"
+            type="button"
+            aria-label="нравится"
+          ></button>
+        </div>
+      </li>
+       </template>
+       <template id="popup-pic">
+       <section class="popup popup_picture">
+         <div class="popup__image-container">
+            <img class="popup__image" src='' alt="">  
+            <h2 class="popup__image-title"></h2>
+            <button class="popup__close-button" type="button" aria-label="закрыть"></button>
+         </div>
+      </section>
+    </template>
     <script src="./scripts/index.js"></script>
   </body>
 </html>
