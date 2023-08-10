@@ -1,6 +1,5 @@
 .popup_picture {
     flex-direction: column;
     align-items: center;
-    visibility: visible;
-    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.9);
 }
