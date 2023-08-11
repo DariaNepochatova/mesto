@@ -28,9 +28,9 @@ function closePopup(popupElement) {
 }
 
 //находим форму для имени и работы
-const ProfileFormElement = popup.querySelector(".popup__form");
-const nameInput = ProfileFormElement.querySelector("#name");
-const jobInput = ProfileFormElement.querySelector("#job");
+const profileFormElement = popup.querySelector(".popup__form");
+const nameInput = profileFormElement.querySelector("#name");
+const jobInput = profileFormElement.querySelector("#job");
 const addButton = popup.querySelector(".popup__form-button");
 
 //функция редактирования имени и работы
@@ -43,7 +43,7 @@ function handleProfileFormSubmit(evt) {
 }
 
 //вызов функции по редактированию имени и работы и закрытие формы
-ProfileFormElement.addEventListener("submit", handleProfileFormSubmit);
+profileFormElement.addEventListener("submit", handleProfileFormSubmit);
 addButton.addEventListener("click", function() {
   closePopup(popup)});
 
@@ -67,12 +67,12 @@ placeAddButton.addEventListener("click", function() {
   closePopup(popupPicture)});
 
 //template
-const galleryCards = document.querySelector("#cards").content;
+const galleryCardTemplate = document.querySelector("#cards").content;
 const gallery = document.querySelector(".gallery__items");
 
 //создание карточки
 function createCardElement(cardData) {
-  const card = galleryCards.querySelector(".gallery__item").cloneNode(true);
+  const card = galleryCardTemplate.querySelector(".gallery__item").cloneNode(true);
   card.querySelector(".gallery__image").src = cardData.link;
   card.querySelector(".gallery__image").alt = cardData.name;
   card.querySelector(".gallery__title").textContent = cardData.name;
