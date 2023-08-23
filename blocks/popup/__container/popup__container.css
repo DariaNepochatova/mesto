@@ -9,6 +9,7 @@
     padding-left: 36px;
     padding-right: 36px;
     box-sizing: border-box;
+    z-index: 3;
 } 
 
 @media screen and (max-width: 530px) {

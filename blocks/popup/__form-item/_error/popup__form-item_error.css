@@ -1,0 +1,11 @@
+.popup__form-item_error {
+    border-bottom-color: red;
+}
+
+.popup__input-error {
+    color: white
+}
+
+.popup__input-error_active {
+    color: red
+}

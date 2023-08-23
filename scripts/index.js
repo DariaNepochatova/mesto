@@ -8,6 +8,21 @@ openPopup(popup)});
 profilePopupCloseButton.addEventListener("click", function() {
 closePopup(popup)});
 
+//закрытие с помощью клика вне окна
+function popupCloseOverlay(evt) {
+  if (evt.target === evt.currentTarget) {
+    closePopup(evt.target)
+  }
+}
+
+//зактытие с помощью Esc
+function keyHandlerPopup(evt) {
+  if (evt.key === 'Escape') {
+  const currentOpenPopup = document.querySelector('.popup_opened');
+  closePopup(currentOpenPopup)
+  }
+}
+
 //попап с добавлением картинок
 const popupPicture = document.querySelector("#picture");
 const addPictureButton = document.querySelector(".profile__add-button");
@@ -15,16 +30,21 @@ const addPicturePopupCloseButton = popupPicture.querySelector(".popup__close-but
 
 addPictureButton.addEventListener("click", function() {
   openPopup(popupPicture)});
-  addPicturePopupCloseButton.addEventListener("click", function() { 
+addPicturePopupCloseButton.addEventListener("click", function() { 
   closePopup(popupPicture)});
 
 //функции для открытия и закрытия попапа
 function openPopup(popupElement) {
   popupElement.classList.add("popup_opened");
+  document.addEventListener('keydown', keyHandlerPopup);
+  //для закрытия через клик вне окна
+  popupElement.addEventListener('mousedown', popupCloseOverlay)
 }
 
 function closePopup(popupElement) {
   popupElement.classList.remove("popup_opened");
+  //через Esc
+  document.removeEventListener('keydown', keyHandlerPopup);
 }
 
 //находим форму для имени и работы
@@ -32,6 +52,68 @@ const profileFormElement = popup.querySelector(".popup__form");
 const nameInput = profileFormElement.querySelector("#name");
 const jobInput = profileFormElement.querySelector("#job");
 const addButton = popup.querySelector(".popup__form-button");
+
+//валидация формы
+
+//показывает ошибку и выделяет область красным
+const showImputError = (formElement, inputElement, errorMessage) => {
+
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+
+  inputElement.classList.add('popup__form-item_error');
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add('popup__input-error_active');
+};
+
+//убирает показ ошибки
+const hideImputError = (formElement, inputElement) => {
+
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+
+  inputElement.classList.remove('popup__form-item_error');
+  errorElement.classList.remove('popup__input-error_active');
+  errorElement.textContent = '';
+};
+
+//проверка валидности формы
+const isValid = (formElement, inputElement) => {
+  if (!nameInput.validity.valid) {
+    showImputError(formElement, inputElement, inputElement.validationMessage);
+  }
+  else {
+    hideImputError(formElement, inputElement);
+  }
+};
+
+//ищет все поля в форме
+const setEventListeners = (formElement) => {
+  // Находим все поля внутри формы, сделаем из них массив методом Array.from
+  const inputList = Array.from(formElement.querySelectorAll('.popup__form-item'));
+
+  // Обойдём все элементы полученной коллекции
+  inputList.forEach((inputElement) => {
+    // каждому полю добавим обработчик события input
+    inputElement.addEventListener('input', () => {
+      // Внутри колбэка вызовем isValid, передав ей форму и проверяемый элемент
+      isValid(formElement, inputElement)
+    });
+  });
+}; 
+
+//ищет все формы на странице
+const enableValidation = () => {
+  // Найдём все формы с указанным классом в DOM, сделаем из них массив методом Array.from
+  const formList = Array.from(document.querySelectorAll('.popup__form'));
+
+  // Переберём полученную коллекцию
+  formList.forEach((formElement) => {
+    // Для каждой формы вызовем функцию setEventListeners, передав ей элемент формы
+    setEventListeners(formElement);
+  });
+};
+
+// Вызовем функцию
+enableValidation(); 
 
 //функция редактирования имени и работы
 function handleProfileFormSubmit(evt) {
@@ -124,6 +206,7 @@ function addListenersToCard(card, cardData) {
 
   //закрытие попапа с картинкой
   picture.querySelector(".popup__close-button").addEventListener("click", function() {closePopup(picture)});
+  //picture.querySelector(".popup__overlay").addEventListener("click", function() {closePopup(picture)});
 }
 
 //создание первоначального списка карточек
@@ -136,3 +219,7 @@ function renderInitialCards() {
 }
 
 renderInitialCards();
+
+
+//валидация формы
+
