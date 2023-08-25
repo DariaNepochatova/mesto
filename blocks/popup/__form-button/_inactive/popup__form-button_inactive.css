@@ -1,0 +1,10 @@
+.popup__form-button_inactive {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    color: rgba(0, 0, 0, 0.15);
+    background-color: #F6F6F6;
+}
+
+.popup__form-button_inactive:hover {
+    cursor: default;
+    opacity: 1;
+}

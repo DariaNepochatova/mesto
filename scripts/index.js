@@ -53,6 +53,12 @@ const nameInput = profileFormElement.querySelector("#name");
 const jobInput = profileFormElement.querySelector("#job");
 const addButton = popup.querySelector(".popup__form-button");
 
+//находим форму для добавления карточки
+const placePictureForm = popupPicture.querySelector(".popup__form");
+const placeName = popupPicture.querySelector("#place-name");
+const placeLink = popupPicture.querySelector("#place-link");
+const placeAddButton = popupPicture.querySelector(".popup__form-button");
+
 //валидация формы
 
 //показывает ошибку и выделяет область красным
@@ -62,7 +68,7 @@ const showImputError = (formElement, inputElement, errorMessage) => {
 
   inputElement.classList.add('popup__form-item_error');
   errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__input-error_active');
+  errorElement.classList.add('popup__input-error');
 };
 
 //убирает показ ошибки
@@ -71,13 +77,13 @@ const hideImputError = (formElement, inputElement) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
 
   inputElement.classList.remove('popup__form-item_error');
-  errorElement.classList.remove('popup__input-error_active');
+  errorElement.classList.remove('popup__input-error');
   errorElement.textContent = '';
 };
 
 //проверка валидности формы
 const isValid = (formElement, inputElement) => {
-  if (!nameInput.validity.valid) {
+  if (!inputElement.validity.valid) {
     showImputError(formElement, inputElement, inputElement.validationMessage);
   }
   else {
@@ -90,15 +96,46 @@ const setEventListeners = (formElement) => {
   // Находим все поля внутри формы, сделаем из них массив методом Array.from
   const inputList = Array.from(formElement.querySelectorAll('.popup__form-item'));
 
+  const buttonElement = formElement.querySelector(".popup__form-button");
+
+  toggleButtonState(inputList, buttonElement);
+
   // Обойдём все элементы полученной коллекции
   inputList.forEach((inputElement) => {
     // каждому полю добавим обработчик события input
     inputElement.addEventListener('input', () => {
       // Внутри колбэка вызовем isValid, передав ей форму и проверяемый элемент
       isValid(formElement, inputElement)
+      toggleButtonState(inputList, buttonElement);
     });
   });
 }; 
+
+//проверяем, есть ли невалидные инпуты в формах
+const hasInvalidInput = (inputList) => {
+  // проходим по этому массиву методом some
+  return inputList.some((inputElement) => {
+    // Если поле не валидно, колбэк вернёт true
+    // Обход массива прекратится и вся функция
+    // hasInvalidInput вернёт true
+
+    return !inputElement.validity.valid;
+  })
+}; 
+
+// Функция принимает массив полей ввода и элемент кнопки, состояние которой нужно менять
+const toggleButtonState = (inputList, buttonElement) => {
+  // Если есть хотя бы один невалидный инпут
+  if (hasInvalidInput(inputList)) {
+    // сделай кнопку неактивной
+    buttonElement.classList.add('popup__form-button_inactive');
+    buttonElement.setAttribute("disabled", "disabled");
+  } else {
+    // иначе сделай кнопку активной
+    buttonElement.classList.remove('popup__form-button_inactive');
+    buttonElement.removeAttribute("disabled", "disabled");
+  }
+};
 
 //ищет все формы на странице
 const enableValidation = () => {
@@ -129,18 +166,14 @@ profileFormElement.addEventListener("submit", handleProfileFormSubmit);
 addButton.addEventListener("click", function() {
   closePopup(popup)});
 
-//находим форму для добавления карточки
-const placePictureForm = popupPicture.querySelector(".popup__form");
-const placeName = popupPicture.querySelector("#place-name");
-const placeLink = popupPicture.querySelector("#place-link");
-const placeAddButton = popupPicture.querySelector(".popup__form-button");
-
 //функция по добавлению карточки
 function addPicForm(evt) {
   evt.preventDefault();
   const cardData = { name: placeName.value, link: placeLink.value };
   evt.target.reset();
   prependCardToGallery(cardData);
+  placeAddButton.setAttribute("disabled", "disabled");
+  placeAddButton.classList.add('popup__form-button_inactive');
 }
 
 //вызов функции по добавлени карточки и закрытие формы
