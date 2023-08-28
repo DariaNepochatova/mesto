@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="./pages/index.css" />
     <script defer src="./scripts/constants.js"></script>
     <script defer src="./scripts/index.js"></script>
+    <script defer src="./scripts/validaton.js"></script>
     <title>Mesto</title>
   </head> 
   <body class="body">
@@ -45,7 +46,7 @@
       <footer class="footer">
         <p class="footer__title">© 2020 Mesto Russia</p>
       </footer>
-      <section class="popup" id="profile">
+      <section class="popup popup_type_profile" id="profile">
         <div class="popup__container">
           <h2 class="popup__title">Редактировать профиль</h2>
           <form class="popup__form" name="user_info" novalidate>
@@ -60,7 +61,7 @@
               maxlength="40"
               required
             />
-            <span class="name-error"></span>
+            <span class="name-error popup__input"></span>
             <input
               class="popup__form-item"
               type="text"
@@ -72,7 +73,7 @@
               maxlength="200"
               required
             />
-            <span class="job-error"></span>
+            <span class="job-error popup__input"></span>
             <button
               type="submit"
               class="popup__form-button"
@@ -88,7 +89,7 @@
           ></button>
         </div>
       </section>
-      <section class="popup" id="picture">
+      <section class="popup popup_type_card-add" id="picture">
         <div class="popup__container">
           <h2 class="popup__title">Новое место</h2>
           <form class="popup__form" name="add-picture">
@@ -102,7 +103,7 @@
               maxlength="30"
               required
             />
-            <span class="place-name-error"></span>
+            <span class="place-name-error popup__input"></span>
             <input
               class="popup__form-item"
               type="url"
@@ -111,7 +112,7 @@
               placeholder="Ссылка на картинку"
               required
             />
-            <span class="place-link-error"></span>
+            <span class="place-link-error popup__input"></span>
             <button
               type="submit"
               class="popup__form-button"
@@ -149,7 +150,7 @@
         </div>
       </li>
        </template>
-       <section class="popup popup_picture">
+       <section class="popup popup_type_picture popup_picture">
          <div class="popup__image-container">
             <img class="popup__image" src='https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg' alt=".">  
             <h2 class="popup__image-title">Архыз</h2>

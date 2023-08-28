@@ -2,7 +2,7 @@
     display: block;
     width: 100%;
     min-height: 50px;
-    margin: 48px auto 37px auto;
+    margin: 18px auto 37px auto;
     background-color: #000;
     color: #FFF;
     border: 0;
@@ -20,7 +20,7 @@
 
 @media screen and (max-width: 530px) {
     .popup__form-button {
-        margin: 45px auto 25px;
+        margin: 18px auto 25px;
         font-size: 14px;
         min-height: 46px;
     }
