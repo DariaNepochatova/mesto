@@ -42,7 +42,6 @@ export default class FormValidator {
     this._submitButton.disabled = true;
   }
 
-  // Функция принимает массив полей ввода и элемент кнопки, состояние которой нужно менять
   _toggleButtonState() {
     const hasInvalidInput = this._inputList.some(inputElement => !inputElement.validity.valid);
     hasInvalidInput ? this._inactiveButton() : this._activeButton();
@@ -58,7 +57,6 @@ export default class FormValidator {
     });
   }
 
-  //ищет все формы на странице
   enableValidation() {
     this._formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
