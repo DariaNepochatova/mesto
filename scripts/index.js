@@ -71,7 +71,10 @@ function keyHandlerPopup(evt) {
 
 //слушаетели событий открытия форм
 editButton.addEventListener("click", function() {
-  openPopup(popup)});
+  openPopup(popup);
+  nameInput.value = name.innerText;
+  jobInput.value = job.innerText;
+});
 
 addPictureButton.addEventListener("click", function() {
   openPopup(popupPicture)});
