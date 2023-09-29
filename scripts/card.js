@@ -1,5 +1,6 @@
 export default class Card {
     constructor(data, templateSelector, handlerCardOpen) {
+        this._data = data;
         this._name = data.name;
         this._link = data.link;
         this._templateSelector = templateSelector;
@@ -33,7 +34,7 @@ export default class Card {
           this._handleCardLike(event);
         });
         this._element.querySelector('.gallery__image-container').addEventListener('click', () => {
-          this._handlerCardOpen(this._link, this._name);
+          this._handlerCardOpen(this._data, this._data);
         });
       }
     
