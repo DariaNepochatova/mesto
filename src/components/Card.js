@@ -11,16 +11,14 @@ export default class Card {
     return document.querySelector(this._templateSelector).content.querySelector(".gallery__item").cloneNode(true);
   }
 
-  
   createCard() {
     this._element = this._getTemplate();
     const cardImage = this._element.querySelector(".gallery__image");
     cardImage.src = this._link;
     cardImage.alt = this._name;
     this._element.querySelector(".gallery__title").textContent = this._name;
-    this._likeButton = this._element.querySelector('.gallery__like');
+    this._likeButton = this._element.querySelector(".gallery__like");
     this._setEventListeners();
-    
 
     return this._element;
   }
