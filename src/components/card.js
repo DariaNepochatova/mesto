@@ -1,48 +1,47 @@
 export default class Card {
-    constructor(data, templateSelector, handlerCardOpen) {
-        this._data = data;
-        this._name = data.name;
-        this._link = data.link;
-        this._templateSelector = templateSelector;
-        this._handlerCardOpen = handlerCardOpen;
-    } 
+  constructor(data, templateSelector, handleImageClick) {
+    this._data = data;
+    this._name = data.name;
+    this._link = data.link;
+    this._templateSelector = templateSelector;
+    this._handleImageClick = handleImageClick;
+  }
 
-    _getTemplate() {
-        return document 
-        .querySelector(this._templateSelector)
-        .content.querySelector('.gallery__item')
-        .cloneNode(true);
-    }
+  _getTemplate() {
+    return document.querySelector(this._templateSelector).content.querySelector(".gallery__item").cloneNode(true);
+  }
 
-    createCard() {
-        this._element = this._getTemplate();
-        const cardImage = this._element.querySelector('.gallery__image');
-        const buttonDeleteCard = this._element.querySelector('.gallery__button');
-        cardImage.src = this._link;
-        cardImage.alt = this._name;
-        this._element.querySelector('.gallery__title').textContent = this._name;
-        this._setEventListener();
-
-        return this._element;
-    }
-
-    _setEventListener() {
-        this._element.querySelector('.gallery__button').addEventListener('click', (event) => {
-          this._handleCardTrash(event);
-        });
-        this._element.querySelector('.gallery__like').addEventListener('click', (event) => {
-          this._handleCardLike(event);
-        });
-        this._element.querySelector('.gallery__image-container').addEventListener('click', () => {
-          this._handlerCardOpen(this._data, this._data);
-        });
-      }
+  createCard() {
+    this._element = this._getTemplate();
+    const cardImage = this._element.querySelector(".gallery__image");
+    cardImage.src = this._link;
+    cardImage.alt = this._name;
+    this._element.querySelector(".gallery__title").textContent = this._name;
+    this._likeButton = this._element.querySelector('.gallery__like');
+    this._setEventListeners();
     
-      _handleCardTrash() {
-        this._element.remove();
-      }
-    
-      _handleCardLike(evt) {
-        evt.target.classList.toggle("gallery__like_active");
-      }
+
+    return this._element;
+  }
+
+  _setEventListeners() {
+    this._element.querySelector(".gallery__button").addEventListener("click", (event) => {
+      this._handleCardTrash(event);
+    });
+    this._likeButton.addEventListener("click", () => {
+      this._handleCardLike();
+    });
+    this._element.querySelector(".gallery__image-container").addEventListener("click", () => {
+      this._handleImageClick(this._data, this._data);
+    });
+  }
+
+  _handleCardTrash() {
+    this._element.remove();
+    this._element = null;
+  }
+
+  _handleCardLike() {
+    this._likeButton.classList.toggle("gallery__like_active");
+  }
 }
