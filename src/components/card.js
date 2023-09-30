@@ -11,6 +11,7 @@ export default class Card {
     return document.querySelector(this._templateSelector).content.querySelector(".gallery__item").cloneNode(true);
   }
 
+  
   createCard() {
     this._element = this._getTemplate();
     const cardImage = this._element.querySelector(".gallery__image");
