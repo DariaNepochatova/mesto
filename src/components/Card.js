@@ -23,6 +23,7 @@ export default class Card {
     return this._element;
   }
 
+  
   _setEventListeners() {
     this._element.querySelector(".gallery__button").addEventListener("click", (event) => {
       this._handleCardTrash(event);
