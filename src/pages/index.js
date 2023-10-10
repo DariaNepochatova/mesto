@@ -4,8 +4,59 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import Section from "../components/Section.js";
+import Api from "../components/Api.js";
 import { initialCards, configForm, forms, editButton, addPictureButton, nameInput, jobInput } from "../utils/constants.js";
 import "./index.css";
+
+const apiConfig = {
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-77",
+  headers:
+  {
+    authorization: '9185553e-2b7e-47d6-a9e5-898091c4c546',
+    'Content-Type': 'application/json'
+  }
+}
+
+const api = new Api(apiConfig); 
+
+// тут мы загрузили имя, работу и аватар пользователя с сервера
+function getProfileName() {
+  api.getName()
+  .then((item) => {
+    const userName = item.name;
+    const userJob = item.about;
+    const userAvatar = item.avatar;
+    document.querySelector('.profile__user-name').textContent = userName;
+    document.querySelector('.profile__about-me').textContent = userJob;
+    document.querySelector('.profile__user-avatar').src = userAvatar;
+  })
+}
+
+//вызвали в самом начале, чтобы при открытии страницы отобразилась инфа о пользователе с сервера
+getProfileName()
+
+  //тут мы загрузили изначальный массив карточек с сервера
+  api.getCard()
+  .then((items) => {
+
+    // Создаем экземпляр класса Section
+const cardsSection = new Section(
+  {
+    items: items, // массив данных для отрисовки
+    renderer: (item) => {
+      // Функция-колбэк для создания и отрисовки элемента
+      const cardElement = createNewCard(item);
+      cardsSection.addItem(cardElement); // Добавляем элемент в контейнер
+    },
+  },
+  ".gallery__items"
+);
+
+// Вызываем метод отрисовки всех элементов
+cardsSection.renderItems();
+  })
+
+
 
 //добавить фотку
 const popupAddPicture = new PopupWithForm("#picture", (data) => {
@@ -21,7 +72,12 @@ const userInfo = new UserInfo(".profile__user-name", ".profile__about-me");
 
 //изменяем инфу о себе и имя
 const popupUserInfo = new PopupWithForm("#profile", (data) => {
-  userInfo.setUserInfo({ name: data.name, job: data.job });
+  // userInfo.setUserInfo({ name: data.name, job: data.job });
+  api.editProfileInfo({name: data.name, about: data.job})
+  .then(() => {
+    //вызвала еще раз, чтобы инфа в профиле сразу поменялась
+    getProfileName()
+  })
   popupUserInfo.close();
 });
 popupUserInfo.setEventListeners();
@@ -33,6 +89,8 @@ function editUserInfo() {
   nameInput.value = userData.name;
   jobInput.value = userData.job;
 }
+
+
 
 //функция создания карточки
 function createNewCard(data) {
@@ -54,21 +112,6 @@ addPictureButton.addEventListener("click", function () {
   popupAddPicture.open();
 });
 
-// Создаем экземпляр класса Section
-const cardsSection = new Section(
-  {
-    items: initialCards, // массив данных для отрисовки
-    renderer: (item) => {
-      // Функция-колбэк для создания и отрисовки элемента
-      const cardElement = createNewCard(item);
-      cardsSection.addItem(cardElement); // Добавляем элемент в контейнер
-    },
-  },
-  ".gallery__items"
-);
-
-// Вызываем метод отрисовки всех элементов
-cardsSection.renderItems();
 
 //валидация
 forms.forEach((formElement) => {
