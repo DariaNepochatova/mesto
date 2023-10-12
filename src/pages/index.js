@@ -52,6 +52,29 @@ const cardsSection = new Section(
   ".gallery__items"
 );
 
+const popupAddPicture = new PopupWithForm("#picture", (data) => {
+  // const cardData = { name: data["place-name"], link: data["place-link"] };
+  // addNewCard(cardData);
+  // popupAddPicture.close();
+
+  api.addCard({name: data["place-name"], link:  data["place-link"]})
+  .then((item) => {
+    console.log(item)
+    createNewCard(item)
+    cardsSection.addItem(createNewCard(item));
+  })
+
+  popupAddPicture.close();
+
+});
+
+addPictureButton.addEventListener("click", function () {
+  popupAddPicture.open();
+});
+popupAddPicture.setEventListeners();
+
+
+
 // Вызываем метод отрисовки всех элементов
 cardsSection.renderItems();
   })
@@ -59,12 +82,12 @@ cardsSection.renderItems();
 
 
 //добавить фотку
-const popupAddPicture = new PopupWithForm("#picture", (data) => {
-  const cardData = { name: data["place-name"], link: data["place-link"] };
-  addNewCard(cardData);
-  popupAddPicture.close();
-});
-popupAddPicture.setEventListeners();
+// const popupAddPicture = new PopupWithForm("#picture", (data) => {
+//   const cardData = { name: data["place-name"], link: data["place-link"] };
+//   addNewCard(cardData);
+//   popupAddPicture.close();
+// });
+// popupAddPicture.setEventListeners();
 
 const imagePopup = new PopupWithImage(".popup_picture");
 imagePopup.setEventListeners();
@@ -108,9 +131,9 @@ function addNewCard(cardData) {
 editButton.addEventListener("click", editUserInfo);
 
 //для картинки
-addPictureButton.addEventListener("click", function () {
-  popupAddPicture.open();
-});
+// addPictureButton.addEventListener("click", function () {
+//   popupAddPicture.open();
+// });
 
 
 //валидация

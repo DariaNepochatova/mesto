@@ -43,4 +43,16 @@ export default class Api {
         })
         .then((response) => onError(response))
     }
+
+    // /cards добавляем карточку
+  addCard({ name, link }) {
+    return fetch(`${this._url}/cards`, {
+      headers: this._headers,
+      method: 'POST',
+      body: JSON.stringify({ 
+        name,
+        link })
+    })
+      .then((response) => onError(response))
+  }
 }
