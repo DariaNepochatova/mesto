@@ -55,4 +55,16 @@ export default class Api {
     })
       .then((response) => onError(response))
   }
+
+  // /users/me/avatar   меняем аватар
+  changeAvatar( {avatar} ) {
+    return fetch(`${this._url}/users/me/avatar`, {
+      headers: this._headers,
+      method: 'PATCH',
+      body: JSON.stringify({
+          avatar
+        })
+  })
+  .then((response) => onError(response))
+  }
 }

@@ -45,4 +45,8 @@ const profileFormElement = popupProfile.querySelector(".popup__form");
 const nameInput = profileFormElement.querySelector("#name");
 const jobInput = profileFormElement.querySelector("#job");
 
-export { initialCards, configForm, forms, editButton, addPictureButton, nameInput, jobInput };
+//кнопка для аватара
+
+const avatarButton = document.querySelector('.profile__user-avatar-button');
+
+export { initialCards, configForm, forms, editButton, addPictureButton, nameInput, jobInput, avatarButton };

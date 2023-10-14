@@ -6,7 +6,7 @@ import UserInfo from "../components/UserInfo.js";
 import Section from "../components/Section.js";
 import Api from "../components/Api.js";
 import Popup from "../components/Popup.js";
-import { initialCards, configForm, forms, editButton, addPictureButton, nameInput, jobInput } from "../utils/constants.js";
+import { initialCards, configForm, forms, editButton, addPictureButton, nameInput, jobInput, avatarButton } from "../utils/constants.js";
 import "./index.css";
 
 const apiConfig = {
@@ -30,7 +30,7 @@ function getProfileName() {
     document.querySelector('.profile__user-name').textContent = userName;
     document.querySelector('.profile__about-me').textContent = userJob;
     document.querySelector('.profile__user-avatar').src = userAvatar;
-    console.log(item)
+    // console.log(item)
   })
 }
 
@@ -61,7 +61,7 @@ const popupAddPicture = new PopupWithForm("#picture", (data) => {
   .then(([dataUser, dataCard]) => {
     dataCard.meID = dataUser._id;
     cardsSection.addItemPrepend(createNewCard(dataCard));
-    console.log(dataCard)
+    // console.log(dataCard)
   })
 
   popupAddPicture.close();
@@ -80,8 +80,23 @@ popupAddPicture.setEventListeners();
 cardsSection.renderItems(item);
   })
 
+//попап удаления карточки
 const popupDeletePicture = new Popup('.popup_type_delete-a-pic');
 popupDeletePicture.setEventListeners();
+
+//попап смены аватара
+const popupChangeAvatar = new Popup('.popup_type_change-avatar');
+popupChangeAvatar.setEventListeners();
+
+//открыли попап при клике на аватар
+avatarButton.addEventListener("click", () => {
+  popupChangeAvatar.open();
+})
+
+api.changeAvatar({avatar: 'https://w.forfun.com/fetch/bc/bc0fbeedfbf7444454f68762c6160fd3.jpeg'})
+// .then((item) => {
+//   console.log(item);
+// })
 
 //добавить фотку
 // const popupAddPicture = new PopupWithForm("#picture", (data) => {
