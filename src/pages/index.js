@@ -5,6 +5,7 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import Section from "../components/Section.js";
 import Api from "../components/Api.js";
+import Popup from "../components/Popup.js";
 import { initialCards, configForm, forms, editButton, addPictureButton, nameInput, jobInput } from "../utils/constants.js";
 import "./index.css";
 
@@ -29,6 +30,7 @@ function getProfileName() {
     document.querySelector('.profile__user-name').textContent = userName;
     document.querySelector('.profile__about-me').textContent = userJob;
     document.querySelector('.profile__user-avatar').src = userAvatar;
+    console.log(item)
   })
 }
 
@@ -39,19 +41,25 @@ getProfileName()
   api.getCard()
   .then((items) => {
 
+    const reversedItems = items.reverse();
+
     // Создаем экземпляр класса Section
 const cardsSection = new Section(
   {
-    items: items, // массив данных для отрисовки
+    items: reversedItems, // массив данных для отрисовки
     renderer: (item) => {
       // Функция-колбэк для создания и отрисовки элемента
       const cardElement = createNewCard(item);
       cardsSection.addItem(cardElement); // Добавляем элемент в контейнер
+      // console.log(item)
     },
   },
   ".gallery__items"
 );
 
+
+
+//создаем карточку через запрос на сервер
 const popupAddPicture = new PopupWithForm("#picture", (data) => {
   // const cardData = { name: data["place-name"], link: data["place-link"] };
   // addNewCard(cardData);
@@ -60,7 +68,6 @@ const popupAddPicture = new PopupWithForm("#picture", (data) => {
   api.addCard({name: data["place-name"], link:  data["place-link"]})
   .then((item) => {
     console.log(item)
-    createNewCard(item)
     cardsSection.addItem(createNewCard(item));
   })
 
@@ -68,6 +75,7 @@ const popupAddPicture = new PopupWithForm("#picture", (data) => {
 
 });
 
+//открываем попап для добавления карточки
 addPictureButton.addEventListener("click", function () {
   popupAddPicture.open();
 });
@@ -79,7 +87,8 @@ popupAddPicture.setEventListeners();
 cardsSection.renderItems();
   })
 
-
+const popupDeletePicture = new Popup('.popup_type_delete-a-pic');
+popupDeletePicture.setEventListeners();
 
 //добавить фотку
 // const popupAddPicture = new PopupWithForm("#picture", (data) => {

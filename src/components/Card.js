@@ -3,8 +3,15 @@ export default class Card {
     this._data = data;
     this._name = data.name;
     this._link = data.link;
+    this._likes = data.likes;
+    this._likesNumber = data.likes.length;
+    this._ID = data._id;
+    // this._meID = data.meID; -херня какая-то...
+    this._ownerID = data.owner._id;
     this._templateSelector = templateSelector;
     this._handleImageClick = handleImageClick;
+    this._popupDelete = document.querySelector('.popup_type_delete-a-pic');
+    this._popupDeleteButton = this._popupDelete.querySelector('.popup__form-button_delete-a-pic');
   }
 
   _getTemplate() {
@@ -19,6 +26,9 @@ export default class Card {
     this._element.querySelector(".gallery__title").textContent = this._name;
     this._likeButton = this._element.querySelector(".gallery__like");
     this._setEventListeners();
+    this._element.querySelector(".gallery__like-number").textContent = this._likesNumber;
+    this._removeCardButton();
+
 
     return this._element;
   }
@@ -37,11 +47,30 @@ export default class Card {
   }
 
   _handleCardTrash() {
-    this._element.remove();
-    this._element = null;
+    this._popupDelete.classList.add('popup_opened');
+    this._popupDeleteButton.addEventListener("click", () => {
+       this._element.remove();
+       this._element = null;
+       this._popupDelete.classList.remove('popup_opened');
+    })
+  
   }
 
   _handleCardLike() {
     this._likeButton.classList.toggle("gallery__like_active");
   }
+
+  _removeCardButton () {
+   
+
+    if (this._ownerID === 'b3b1618cffa23779e344f468') { //вот тут типа надо, чтобы сам подгружался айдишник с профиля. НО Я ВООБЩЕ ХЗ КАК ЭТО СДЕЛАТЬ
+      this._element.querySelector(".gallery__button").style.display = 'block'
+    }
+    else {
+      this._element.querySelector(".gallery__button").style.display = 'none'
+    }
+
+  }
+
+  
 }
