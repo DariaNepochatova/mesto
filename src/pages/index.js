@@ -39,36 +39,29 @@ getProfileName()
 
   //тут мы загрузили изначальный массив карточек с сервера
   api.getCard()
-  .then((items) => {
+  .then((item) => {
 
-    const reversedItems = items.reverse();
+   
+
 
     // Создаем экземпляр класса Section
-const cardsSection = new Section(
-  {
-    items: reversedItems, // массив данных для отрисовки
-    renderer: (item) => {
-      // Функция-колбэк для создания и отрисовки элемента
+const cardsSection = new Section((item) => {
       const cardElement = createNewCard(item);
-      cardsSection.addItem(cardElement); // Добавляем элемент в контейнер
+      cardsSection.addItemAppend(cardElement); // Добавляем элемент в контейнер
       // console.log(item)
     },
-  },
+  
   ".gallery__items"
 );
 
-
-
 //создаем карточку через запрос на сервер
 const popupAddPicture = new PopupWithForm("#picture", (data) => {
-  // const cardData = { name: data["place-name"], link: data["place-link"] };
-  // addNewCard(cardData);
-  // popupAddPicture.close();
 
-  api.addCard({name: data["place-name"], link:  data["place-link"]})
-  .then((item) => {
-    console.log(item)
-    cardsSection.addItem(createNewCard(item));
+  Promise.all([api.getName(), api.addCard({name: data["place-name"], link:  data["place-link"]})])
+  .then(([dataUser, dataCard]) => {
+    dataCard.meID = dataUser._id;
+    cardsSection.addItemPrepend(createNewCard(dataCard));
+    console.log(dataCard)
   })
 
   popupAddPicture.close();
@@ -84,7 +77,7 @@ popupAddPicture.setEventListeners();
 
 
 // Вызываем метод отрисовки всех элементов
-cardsSection.renderItems();
+cardsSection.renderItems(item);
   })
 
 const popupDeletePicture = new Popup('.popup_type_delete-a-pic');

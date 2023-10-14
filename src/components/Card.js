@@ -1,12 +1,13 @@
 export default class Card {
   constructor(data, templateSelector, handleImageClick) {
+    console.log(data)
     this._data = data;
     this._name = data.name;
     this._link = data.link;
     this._likes = data.likes;
     this._likesNumber = data.likes.length;
     this._ID = data._id;
-    // this._meID = data.meID; -херня какая-то...
+    this._meID = data.meID; //-херня какая-то...
     this._ownerID = data.owner._id;
     this._templateSelector = templateSelector;
     this._handleImageClick = handleImageClick;
@@ -63,7 +64,7 @@ export default class Card {
   _removeCardButton () {
    
 
-    if (this._ownerID === 'b3b1618cffa23779e344f468') { //вот тут типа надо, чтобы сам подгружался айдишник с профиля. НО Я ВООБЩЕ ХЗ КАК ЭТО СДЕЛАТЬ
+    if (this._ownerID === this._meID) { //вот тут типа надо, чтобы сам подгружался айдишник с профиля. НО Я ВООБЩЕ ХЗ КАК ЭТО СДЕЛАТЬ
       this._element.querySelector(".gallery__button").style.display = 'block'
     }
     else {
