@@ -7,7 +7,7 @@ import Section from "../components/Section.js";
 import Api from "../components/Api.js";
 import Popup from "../components/Popup.js";
 import PopupDeleteCard from "../components/PopupDeleteCard.js";
-import { initialCards, configForm, forms, editButton, addPictureButton, nameInput, jobInput, avatarButton } from "../utils/constants.js";
+import { initialCards, configForm, forms, editButton, addPictureButton, nameInput, jobInput, avatarButton, submitButton } from "../utils/constants.js";
 import "./index.css";
 
 const apiConfig = {
@@ -33,9 +33,17 @@ function getProfileName() {
     document.querySelector('.profile__user-avatar').src = userAvatar;
     // console.log(item)
   })
+  .catch(error => console.error(`Ошибка при попытке получить информацию о пользователе ${error}`))
 }
 
-
+function renderLoading (isLoad, loadingMsg, notLoadingMsg) {
+  if (isLoad) {
+submitButton.textContent = loadingMsg
+  }
+  else {
+submitButton.textContent = notLoadingMsg
+  }
+}
 
     // Создаем экземпляр класса Section
     const cardsSection = new Section((item) => {
@@ -61,14 +69,13 @@ getProfileName()
 
 //создаем карточку через запрос на сервер
 const popupAddPicture = new PopupWithForm("#picture", (data) => {
-
   Promise.all([api.getName(), api.addCard({name: data["place-name"], link:  data["place-link"]})])
   .then(([dataUser, dataCard]) => {
     dataCard.meID = dataUser._id;
     cardsSection.addItemPrepend(createNewCard(dataCard));
     // console.log(dataCard)
   })
-
+  .catch(error => console.error(`Ошибка при попытке добавить карточку ${error}`))
   popupAddPicture.close();
 
 });
@@ -105,6 +112,7 @@ const PopupAvatar = new PopupWithForm('.popup_type_change-avatar', (data) => {
   .then(() => {
     getProfileName();
   })
+  .catch(error => console.error(`Ошибка при попытке сменить аватар ${error}`))
   PopupAvatar.close()
 })
 PopupAvatar.setEventListeners()
@@ -132,6 +140,7 @@ const popupUserInfo = new PopupWithForm("#profile", (data) => {
     //вызвала еще раз, чтобы инфа в профиле сразу поменялась
     getProfileName()
   })
+  .catch(error => console.error(`Ошибка при попытке изменить информацию о пользователе ${error}`))
   popupUserInfo.close();
 });
 popupUserInfo.setEventListeners();
@@ -150,8 +159,10 @@ const popupDeleteCard = new PopupDeleteCard('.popup_type_delete-a-pic', ({card, 
     card.cardTrash();
     popupDeleteCard.close();
   })
+  .catch(error => console.error(`Ошибка при попытке удалить карточки ${error}`))
 })
 popupDeleteCard.setEventListeners();
+
 
 
 

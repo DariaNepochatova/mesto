@@ -46,7 +46,9 @@ const nameInput = profileFormElement.querySelector("#name");
 const jobInput = profileFormElement.querySelector("#job");
 
 //кнопка для аватара
-
 const avatarButton = document.querySelector('.profile__user-avatar-button');
 
-export { initialCards, configForm, forms, editButton, addPictureButton, nameInput, jobInput, avatarButton };
+//конпка для отправки формы
+const submitButton = document.querySelector('.popup__form-button');
+
+export { initialCards, configForm, forms, editButton, addPictureButton, nameInput, jobInput, avatarButton, submitButton };
