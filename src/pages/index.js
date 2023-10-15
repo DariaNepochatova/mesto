@@ -6,6 +6,7 @@ import UserInfo from "../components/UserInfo.js";
 import Section from "../components/Section.js";
 import Api from "../components/Api.js";
 import Popup from "../components/Popup.js";
+import PopupDeleteCard from "../components/PopupDeleteCard.js";
 import { initialCards, configForm, forms, editButton, addPictureButton, nameInput, jobInput, avatarButton } from "../utils/constants.js";
 import "./index.css";
 
@@ -34,6 +35,8 @@ function getProfileName() {
   })
 }
 
+
+
     // Создаем экземпляр класса Section
     const cardsSection = new Section((item) => {
       const cardElement = createNewCard(item);
@@ -48,8 +51,8 @@ function getProfileName() {
 getProfileName()
 
   //тут мы загрузили изначальный массив карточек с сервера
-  api.getCard()
-  .then((item) => {
+  // api.getCard()
+  // .then((item) => {
 
    
 
@@ -79,12 +82,12 @@ popupAddPicture.setEventListeners();
 
 
 // Вызываем метод отрисовки всех элементов
-cardsSection.renderItems(item);
-  })
+// cardsSection.renderItems(item);
+  // })
 
-//попап удаления карточки
-const popupDeletePicture = new Popup('.popup_type_delete-a-pic');
-popupDeletePicture.setEventListeners();
+// //попап удаления карточки
+// const popupDeletePicture = new Popup('.popup_type_delete-a-pic');
+// popupDeletePicture.setEventListeners();
 
 //попап смены аватара
 const popupChangeAvatar = new Popup('.popup_type_change-avatar');
@@ -141,18 +144,27 @@ function editUserInfo() {
   jobInput.value = userData.job;
 }
 
+const popupDeleteCard = new PopupDeleteCard('.popup_type_delete-a-pic', ({card, cardID}) => {
+  api.deleteCard(cardID)
+  .then(() => {
+    card.cardTrash();
+    popupDeleteCard.close();
+  })
+})
+popupDeleteCard.setEventListeners();
+
 
 
 //функция создания карточки
 function createNewCard(data) {
-  const card = new Card(data, "#cards", imagePopup.open);
+  const card = new Card(data, "#cards", imagePopup.open, popupDeleteCard.open);
   return card.createCard();
 }
 
-//Функция создания новой карточки
-function addNewCard(cardData) {
-  cardsSection.addItem(createNewCard(cardData));
-}
+// //Функция создания новой карточки
+// function addNewCard(cardData) {
+//   cardsSection.addItem(createNewCard(cardData));
+// }
 
 //слушаетели событий открытия форм
 //для профиля
@@ -163,6 +175,10 @@ editButton.addEventListener("click", editUserInfo);
 //   popupAddPicture.open();
 // });
 
+// api.deleteCard('652bb9b3dd024310eba05e23')
+// .then((item) => {
+//   console.log(item)
+// })
 
 //валидация
 forms.forEach((formElement) => {
@@ -175,6 +191,7 @@ Promise.all([api.getName(), api.getCard()])
     dataCard.forEach(element => element.meID = dataUser._id);
     // userInfo.setUserInfo({name: dataUser.name, job: dataUser.about, ava: dataUser.avatar});
     cardsSection.renderItems(dataCard)
-    console.log(dataCard)
+    // console.log(dataCard)
+ 
   })
   .catch(error => console.error(`Ошибка при попытке загрузить карточки ${error}`))

@@ -68,4 +68,15 @@ export default class Api {
   })
   .then((response) => onError(response))
   }
+
+
+  // /cards/cardId удалить карточку
+  deleteCard(cardId) {
+    return fetch(`${this._url}/cards/${cardId} `, {
+      headers: this._headers,
+      method: 'DELETE',
+    })
+
+    .then((response) => onError(response))
+  }
 }

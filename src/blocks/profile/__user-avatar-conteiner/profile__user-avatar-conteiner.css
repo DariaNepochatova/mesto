@@ -3,3 +3,10 @@
     height: 120px;
     position: relative;
 }
+
+@media screen and (max-width: 660px) {
+    .profile__user-avatar-conteiner {
+        align-self: center;
+        max-width: 37.5vw;
+    }
+}
