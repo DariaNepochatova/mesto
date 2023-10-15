@@ -1,3 +1,4 @@
+
 export default class Card {
   constructor(data, templateSelector, handleImageClick) {
     this._data = data;
@@ -27,7 +28,7 @@ export default class Card {
     this._likeButton = this._element.querySelector(".gallery__like");
     this._setEventListeners();
     this._element.querySelector(".gallery__like-number").textContent = this._likesNumber;
-    this._removeCardButton();
+    this._showCardButton();
 
 
     return this._element;
@@ -60,9 +61,8 @@ export default class Card {
     this._likeButton.classList.toggle("gallery__like_active");
   }
 
-  _removeCardButton () {
-   
-
+  _showCardButton () {
+    console.log('id- '+this._ownerID+' мой- '+this._meID)
     if (this._ownerID === this._meID) { //вот тут типа надо, чтобы сам подгружался айдишник с профиля. НО Я ВООБЩЕ ХЗ КАК ЭТО СДЕЛАТЬ
       this._element.querySelector(".gallery__button").style.display = 'block'
     }

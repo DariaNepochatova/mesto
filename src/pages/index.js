@@ -34,6 +34,16 @@ function getProfileName() {
   })
 }
 
+    // Создаем экземпляр класса Section
+    const cardsSection = new Section((item) => {
+      const cardElement = createNewCard(item);
+      cardsSection.addItemAppend(cardElement); // Добавляем элемент в контейнер
+      // console.log(item)
+    },
+  
+  ".gallery__items"
+);
+
 //вызвали в самом начале, чтобы при открытии страницы отобразилась инфа о пользователе с сервера
 getProfileName()
 
@@ -44,15 +54,7 @@ getProfileName()
    
 
 
-    // Создаем экземпляр класса Section
-const cardsSection = new Section((item) => {
-      const cardElement = createNewCard(item);
-      cardsSection.addItemAppend(cardElement); // Добавляем элемент в контейнер
-      // console.log(item)
-    },
-  
-  ".gallery__items"
-);
+
 
 //создаем карточку через запрос на сервер
 const popupAddPicture = new PopupWithForm("#picture", (data) => {
@@ -90,10 +92,19 @@ popupChangeAvatar.setEventListeners();
 
 //открыли попап при клике на аватар
 avatarButton.addEventListener("click", () => {
-  popupChangeAvatar.open();
+  PopupAvatar.open();
 })
 
-api.changeAvatar({avatar: 'https://w.forfun.com/fetch/bc/bc0fbeedfbf7444454f68762c6160fd3.jpeg'})
+// api.changeAvatar({avatar: 'https://w.forfun.com/fetch/bc/bc0fbeedfbf7444454f68762c6160fd3.jpeg'})
+
+const PopupAvatar = new PopupWithForm('.popup_type_change-avatar', (data) => {
+  api.changeAvatar({avatar: data["avatar-link"]})
+  .then(() => {
+    getProfileName();
+  })
+  PopupAvatar.close()
+})
+PopupAvatar.setEventListeners()
 // .then((item) => {
 //   console.log(item);
 // })
@@ -158,3 +169,12 @@ forms.forEach((formElement) => {
   const formValidator = new FormValidator(configForm, formElement);
   formValidator.enableValidation();
 });
+
+Promise.all([api.getName(), api.getCard()])
+  .then(([dataUser, dataCard]) => {
+    dataCard.forEach(element => element.meID = dataUser._id);
+    // userInfo.setUserInfo({name: dataUser.name, job: dataUser.about, ava: dataUser.avatar});
+    cardsSection.renderItems(dataCard)
+    console.log(dataCard)
+  })
+  .catch(error => console.error(`Ошибка при попытке загрузить карточки ${error}`))

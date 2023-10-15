@@ -44,25 +44,26 @@ export default class Api {
         .then((response) => onError(response))
     }
 
-    // /cards добавляем карточку
-  addCard({ name, link }) {
-    return fetch(`${this._url}/cards`, {
-      headers: this._headers,
-      method: 'POST',
-      body: JSON.stringify({ 
-        name,
-        link })
+ // /cards добавляем карточку
+ addCard(data) {
+  return fetch(`${this._url}/cards`, {
+    headers: this._headers,
+    method: 'POST',
+    body: JSON.stringify({
+      name: data.name,
+      link: data.link
     })
-      .then((response) => onError(response))
-  }
+  })
+    .then((response) => onError(response))
+}
 
   // /users/me/avatar   меняем аватар
-  changeAvatar( {avatar} ) {
+  changeAvatar(data) {
     return fetch(`${this._url}/users/me/avatar`, {
       headers: this._headers,
       method: 'PATCH',
       body: JSON.stringify({
-          avatar
+          avatar: data.avatar
         })
   })
   .then((response) => onError(response))
