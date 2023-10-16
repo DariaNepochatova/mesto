@@ -1,29 +1,3 @@
-const initialCards = [
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  },
-];
 
 const configForm = {
   formSelector: ".popup__form",
@@ -48,7 +22,5 @@ const jobInput = profileFormElement.querySelector("#job");
 //кнопка для аватара
 const avatarButton = document.querySelector('.profile__user-avatar-button');
 
-//конпка для отправки формы
-const submitButton = document.querySelector('.popup__form-button');
 
-export { initialCards, configForm, forms, editButton, addPictureButton, nameInput, jobInput, avatarButton, submitButton };
+export { configForm, forms, editButton, addPictureButton, nameInput, jobInput, avatarButton };

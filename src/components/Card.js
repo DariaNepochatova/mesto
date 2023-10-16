@@ -1,6 +1,6 @@
 
 export default class Card {
-  constructor(data, templateSelector, handleImageClick, openDeletePopup) {
+  constructor(data, templateSelector, handleImageClick, openDeletePopup, like, removeLike) {
     this._data = data;
     this._name = data.name;
     this._link = data.link;
@@ -12,6 +12,8 @@ export default class Card {
     this._templateSelector = templateSelector;
     this._handleImageClick = handleImageClick;
     this._openDeletePopup = openDeletePopup;
+    this._like = like;
+    this._removeLike = removeLike;
   }
 
   _getTemplate() {
@@ -26,9 +28,8 @@ export default class Card {
     this._element.querySelector(".gallery__title").textContent = this._name;
     this._likeButton = this._element.querySelector(".gallery__like");
     this._setEventListeners();
-    this._element.querySelector(".gallery__like-number").textContent = this._likesNumber;
     this._showCardButton();
-
+    this._setLikesState(this._likes);
 
     return this._element;
   }
@@ -39,7 +40,7 @@ export default class Card {
       this._handleCardTrash();
     });
     this._likeButton.addEventListener("click", () => {
-      this._handleCardLike();
+      this._handleToggleLike();
     });
     this._element.querySelector(".gallery__image-container").addEventListener("click", () => {
       this._handleImageClick(this._data, this._data);
@@ -55,8 +56,28 @@ export default class Card {
     this._element = null;
 }
 
-  _handleCardLike() {
-    this._likeButton.classList.toggle("gallery__like_active");
+  _handleToggleLike() {
+    if(this.hasLike) {
+      this._removeLike(this._ID)
+      .then((updatedCard)=>{
+        this._setLikesState(updatedCard.likes)
+      })
+      .catch(error => console.error(`Ошибка при попытке убрать лайк ${error}`))
+    }
+    else {
+        this._like(this._ID)
+        .then((updatedCard)=>{
+          this._setLikesState(updatedCard.likes)
+        })
+        .catch(error => console.error(`Ошибка при попытке поставить лайк ${error}`))
+    }
+  }
+
+  _setLikesState(likes) {
+    this._likes = likes;
+    this._likesNumber = likes.length;
+    this._element.querySelector(".gallery__like-number").textContent = this._likesNumber;
+    this._setHasLike()
   }
 
   _showCardButton () {
@@ -69,6 +90,17 @@ export default class Card {
 
   }
 
-
+  _setHasLike() {
+const hasLike = this._likes.some((element) => {
+  return element._id === this._meID
+})
+this.hasLike = hasLike;
+if (hasLike) {
+  this._likeButton.classList.add("gallery__like_active");
+}
+else {
+  this._likeButton.classList.remove("gallery__like_active");
+}
+  }
   
 }

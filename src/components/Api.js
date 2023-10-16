@@ -79,4 +79,24 @@ export default class Api {
 
     .then((response) => onError(response))
   }
+
+  // /cards/{cardId}/likes поставить лайк
+  addLike(cardId) {
+    return fetch(`${this._url}/cards/${cardId}/likes `, {
+      headers: this._headers,
+      method: 'PUT',
+    })
+
+    .then((response) => onError(response))
+  }
+
+   // /cards/{cardId}/likes убрать лайк
+   removeLike(cardId) {
+    return fetch(`${this._url}/cards/${cardId}/likes `, {
+      headers: this._headers,
+      method: 'DELETE',
+    })
+
+    .then((response) => onError(response))
+  }
 }
