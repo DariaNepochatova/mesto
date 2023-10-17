@@ -57,11 +57,7 @@ Promise.all([api.getName(), api.getCard()])
     //отрисовали карточки
     cardsSection.renderItems(dataCard);
     //загрузили профиль
-    userInfo.setUserInfo({
-      name: dataUser.name,
-      job: dataUser.about,
-      avatar: dataUser.avatar,
-    });
+    userInfo.setUserInfo(dataUser);
     //  console.log(meID)
   })
   .catch((error) =>
@@ -76,7 +72,6 @@ const popupAddPicture = new PopupWithForm("#picture", (data) => {
     .then((dataCard) => {
       cardsSection.addItemPrepend(createNewCard(dataCard));
       popupAddPicture.close();
-      // console.log(dataCard)
     })
     .catch((error) =>
       console.error(`Ошибка при попытке добавить карточку ${error}`)
@@ -98,11 +93,7 @@ const popupAvatar = new PopupWithForm(".popup_type_change-avatar", (data) => {
   api
     .changeAvatar({ avatar: data["avatar-link"] })
     .then((item) => {
-      userInfo.setUserInfo({
-        name: item.name,
-        job: item.about,
-        avatar: item.avatar,
-      });
+      userInfo.setUserInfo(item);
       popupAvatar.close();
     })
     .catch((error) =>
@@ -133,11 +124,7 @@ const popupUserInfo = new PopupWithForm("#profile", (data) => {
     .editProfileInfo({ name: data.name, about: data.job })
     .then((item) => {
       //вызвала еще раз, чтобы инфа в профиле сразу поменялась
-      userInfo.setUserInfo({
-        name: item.name,
-        job: item.about,
-        avatar: item.avatar,
-      });
+      userInfo.setUserInfo(item);
       popupUserInfo.close();
     })
     .catch((error) =>
