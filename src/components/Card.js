@@ -2,6 +2,7 @@ export default class Card {
   constructor(
     data,
     templateSelector,
+    meID,
     handleImageClick,
     openDeletePopup,
     like,
@@ -13,7 +14,7 @@ export default class Card {
     this._likes = data.likes;
     this._likesNumber = data.likes.length;
     this._ID = data._id;
-    this._meID = data.meID;
+    this._meID = meID;
     this._ownerID = data.owner._id;
     this._templateSelector = templateSelector;
     this._handleImageClick = handleImageClick;

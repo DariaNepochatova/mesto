@@ -30,7 +30,11 @@ const apiConfig = {
 const api = new Api(apiConfig);
 
 //экземпляр класса UserInfo
-const userInfo = new UserInfo(".profile__user-name", ".profile__about-me", '.profile__user-avatar');
+const userInfo = new UserInfo(
+  ".profile__user-name",
+  ".profile__about-me",
+  ".profile__user-avatar"
+);
 
 // экземпляр класса Section
 const cardsSection = new Section(
@@ -43,14 +47,22 @@ const cardsSection = new Section(
   ".gallery__items"
 );
 
+//тут хранится наш айдишник
+let meID;
+
 //отрисовка массива карточек и информации о пользователее при открытии страницы
 Promise.all([api.getName(), api.getCard()])
   .then(([dataUser, dataCard]) => {
-    dataCard.forEach((element) => (element.meID = dataUser._id));
+    meID = dataUser._id;
     //отрисовали карточки
     cardsSection.renderItems(dataCard);
-   //загрузили профиль
-    userInfo.setUserInfo({name: dataUser.name, job: dataUser.about, avatar: dataUser.avatar})
+    //загрузили профиль
+    userInfo.setUserInfo({
+      name: dataUser.name,
+      job: dataUser.about,
+      avatar: dataUser.avatar,
+    });
+    //  console.log(meID)
   })
   .catch((error) =>
     console.error(`Ошибка при попытке загрузить карточки ${error}`)
@@ -59,12 +71,9 @@ Promise.all([api.getName(), api.getCard()])
 //создаем карточку через запрос на сервер
 const popupAddPicture = new PopupWithForm("#picture", (data) => {
   popupAddPicture.renderLoading(true);
-  Promise.all([
-    api.getName(),
-    api.addCard({ name: data["place-name"], link: data["place-link"] }),
-  ])
-    .then(([dataUser, dataCard]) => {
-      dataCard.meID = dataUser._id;
+  api
+    .addCard({ name: data["place-name"], link: data["place-link"] })
+    .then((dataCard) => {
       cardsSection.addItemPrepend(createNewCard(dataCard));
       popupAddPicture.close();
       // console.log(dataCard)
@@ -89,7 +98,11 @@ const popupAvatar = new PopupWithForm(".popup_type_change-avatar", (data) => {
   api
     .changeAvatar({ avatar: data["avatar-link"] })
     .then((item) => {
-      userInfo.setUserInfo({name: item.name, job: item.about, avatar: item.avatar});
+      userInfo.setUserInfo({
+        name: item.name,
+        job: item.about,
+        avatar: item.avatar,
+      });
       popupAvatar.close();
     })
     .catch((error) =>
@@ -100,7 +113,7 @@ const popupAvatar = new PopupWithForm(".popup_type_change-avatar", (data) => {
     });
 });
 
-//открыли попап при клике на аватар 
+//открыли попап при клике на аватар
 avatarButton.addEventListener("click", () => {
   popupAvatar.open();
 });
@@ -113,7 +126,6 @@ imagePopup.setEventListeners();
 // слушаетели событий открытия формы для профиля
 editButton.addEventListener("click", editUserInfo);
 
-
 //изменяем инфу о себе и имя
 const popupUserInfo = new PopupWithForm("#profile", (data) => {
   popupUserInfo.renderLoading(true);
@@ -121,7 +133,11 @@ const popupUserInfo = new PopupWithForm("#profile", (data) => {
     .editProfileInfo({ name: data.name, about: data.job })
     .then((item) => {
       //вызвала еще раз, чтобы инфа в профиле сразу поменялась
-      userInfo.setUserInfo({name: item.name, job: item.about, avatar: item.avatar})
+      userInfo.setUserInfo({
+        name: item.name,
+        job: item.about,
+        avatar: item.avatar,
+      });
       popupUserInfo.close();
     })
     .catch((error) =>
@@ -171,6 +187,7 @@ function createNewCard(data) {
   const card = new Card(
     data,
     "#cards",
+    meID,
     imagePopup.open,
     popupDeleteCard.open,
     like,
@@ -184,4 +201,3 @@ forms.forEach((formElement) => {
   const formValidator = new FormValidator(configForm, formElement);
   formValidator.enableValidation();
 });
-
