@@ -5,7 +5,6 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import Section from "../components/Section.js";
 import Api from "../components/Api.js";
-import Popup from "../components/Popup.js";
 import PopupDeleteCard from "../components/PopupDeleteCard.js";
 import {
   configForm,
@@ -30,26 +29,10 @@ const apiConfig = {
 //экземпляр класса Api
 const api = new Api(apiConfig);
 
-// тут мы загрузили имя, работу и аватар пользователя с сервера
-function getProfileName() {
-  api
-    .getName()
-    .then((item) => {
-      const userName = item.name;
-      const userJob = item.about;
-      const userAvatar = item.avatar;
-      document.querySelector(".profile__user-name").textContent = userName;
-      document.querySelector(".profile__about-me").textContent = userJob;
-      document.querySelector(".profile__user-avatar").src = userAvatar;
-    })
-    .catch((error) =>
-      console.error(
-        `Ошибка при попытке получить информацию о пользователе ${error}`
-      )
-    );
-}
+//экземпляр класса UserInfo
+const userInfo = new UserInfo(".profile__user-name", ".profile__about-me", '.profile__user-avatar');
 
-// Создаем экземпляр класса Section
+// экземпляр класса Section
 const cardsSection = new Section(
   (item) => {
     const cardElement = createNewCard(item);
@@ -60,12 +43,22 @@ const cardsSection = new Section(
   ".gallery__items"
 );
 
-//вызвали в самом начале, чтобы при открытии страницы отобразилась инфа о пользователе с сервера
-getProfileName();
+//отрисовка массива карточек и информации о пользователее при открытии страницы
+Promise.all([api.getName(), api.getCard()])
+  .then(([dataUser, dataCard]) => {
+    dataCard.forEach((element) => (element.meID = dataUser._id));
+    //отрисовали карточки
+    cardsSection.renderItems(dataCard);
+   //загрузили профиль
+    userInfo.setUserInfo({name: dataUser.name, job: dataUser.about, avatar: dataUser.avatar})
+  })
+  .catch((error) =>
+    console.error(`Ошибка при попытке загрузить карточки ${error}`)
+  );
 
 //создаем карточку через запрос на сервер
 const popupAddPicture = new PopupWithForm("#picture", (data) => {
-  popupAddPicture.setSubmitButtonText("Сохранение...");
+  popupAddPicture.renderLoading(true);
   Promise.all([
     api.getName(),
     api.addCard({ name: data["place-name"], link: data["place-link"] }),
@@ -80,7 +73,7 @@ const popupAddPicture = new PopupWithForm("#picture", (data) => {
       console.error(`Ошибка при попытке добавить карточку ${error}`)
     )
     .finally(() => {
-      popupAddPicture.setSubmitButtonText("Сохранить");
+      popupAddPicture.renderLoading(false);
     });
 });
 
@@ -90,48 +83,45 @@ addPictureButton.addEventListener("click", function () {
 });
 popupAddPicture.setEventListeners();
 
-//попап смены аватара
-const popupChangeAvatar = new Popup(".popup_type_change-avatar");
-popupChangeAvatar.setEventListeners();
-
-//открыли попап при клике на аватар
-avatarButton.addEventListener("click", () => {
-  PopupAvatar.open();
-});
-
 //меняем аватарку
-const PopupAvatar = new PopupWithForm(".popup_type_change-avatar", (data) => {
-  PopupAvatar.setSubmitButtonText("Сохранение...");
+const popupAvatar = new PopupWithForm(".popup_type_change-avatar", (data) => {
+  popupAvatar.renderLoading(true);
   api
     .changeAvatar({ avatar: data["avatar-link"] })
-    .then(() => {
-      getProfileName();
-      PopupAvatar.close();
+    .then((item) => {
+      userInfo.setUserInfo({name: item.name, job: item.about, avatar: item.avatar});
+      popupAvatar.close();
     })
     .catch((error) =>
       console.error(`Ошибка при попытке сменить аватар ${error}`)
     )
     .finally(() => {
-      PopupAvatar.setSubmitButtonText("Сохранить");
+      popupAvatar.renderLoading(false);
     });
 });
-PopupAvatar.setEventListeners();
+
+//открыли попап при клике на аватар 
+avatarButton.addEventListener("click", () => {
+  popupAvatar.open();
+});
+popupAvatar.setEventListeners();
 
 //открыть фотку
 const imagePopup = new PopupWithImage(".popup_picture");
 imagePopup.setEventListeners();
 
-const userInfo = new UserInfo(".profile__user-name", ".profile__about-me");
+// слушаетели событий открытия формы для профиля
+editButton.addEventListener("click", editUserInfo);
+
 
 //изменяем инфу о себе и имя
 const popupUserInfo = new PopupWithForm("#profile", (data) => {
-  popupUserInfo.setSubmitButtonText("Сохранение...");
-  // userInfo.setUserInfo({ name: data.name, job: data.job });
+  popupUserInfo.renderLoading(true);
   api
     .editProfileInfo({ name: data.name, about: data.job })
-    .then(() => {
+    .then((item) => {
       //вызвала еще раз, чтобы инфа в профиле сразу поменялась
-      getProfileName();
+      userInfo.setUserInfo({name: item.name, job: item.about, avatar: item.avatar})
       popupUserInfo.close();
     })
     .catch((error) =>
@@ -140,7 +130,7 @@ const popupUserInfo = new PopupWithForm("#profile", (data) => {
       )
     )
     .finally(() => {
-      popupUserInfo.setSubmitButtonText("Сохранить");
+      popupUserInfo.renderLoading(false);
     });
 });
 popupUserInfo.setEventListeners();
@@ -189,23 +179,9 @@ function createNewCard(data) {
   return card.createCard();
 }
 
-//слушаетели событий открытия форм
-//для профиля
-editButton.addEventListener("click", editUserInfo);
-
 //валидация
 forms.forEach((formElement) => {
   const formValidator = new FormValidator(configForm, formElement);
   formValidator.enableValidation();
 });
 
-Promise.all([api.getName(), api.getCard()])
-  .then(([dataUser, dataCard]) => {
-    dataCard.forEach((element) => (element.meID = dataUser._id));
-    // userInfo.setUserInfo({name: dataUser.name, job: dataUser.about, ava: dataUser.avatar});
-    cardsSection.renderItems(dataCard);
-    // console.log(dataCard)
-  })
-  .catch((error) =>
-    console.error(`Ошибка при попытке загрузить карточки ${error}`)
-  );
